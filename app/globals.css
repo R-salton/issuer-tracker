@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
+
+
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -18,8 +21,12 @@ body {
   font-family: 'Inter', sans-serif;
   margin: 0;
   padding: 0;
+  
+    font-family: var(--font-poppins), sans-serif;
+
 }
 
+js
 section{
   padding: 1rem;
   height: 93vh;

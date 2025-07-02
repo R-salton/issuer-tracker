@@ -11,6 +11,7 @@ const NavaBar = () => {
 const navBarItems = [
   { name: 'Dashboard', path: '/' },
   { name: 'Issues', path: '/issues' },
+  {name: "Create New issue", path: "/issues/new"},
   { name: 'Contact', path: '/contact' },
 ];
 
@@ -37,7 +38,7 @@ console.log(pathname);
                 classNames(
                   {
                      'text-sky-950': pathname === item.path,
-                    'mr-4 transition-all duration-200 font-bold text-sm text-sky-900 hover:text-sky-800 rounded-md': true,
+                    'mr-4 transition-all duration-200 font-medium text-sm text-sky-900 hover:text-sky-800 rounded-md': true,
                     
                    
 

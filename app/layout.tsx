@@ -1,21 +1,19 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import NavaBar from "./navbar";
+import { Poppins} from "next/font/google";
 import "@radix-ui/themes/styles.css";
-import { Theme } from "@radix-ui/themes";
+import "./globals.css";
+import "./theme-config.css"
+import NavaBar from "./navbar";
+
+import { Theme, ThemePanel } from "@radix-ui/themes";
 
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-poppins",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
+  display: "swap",
 });
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
   title: "issue tracker",
   description: "Create and track issues easily",
@@ -27,14 +25,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={poppins.variable}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          className="font-poppins"
       >
         <Theme>
 
         <NavaBar />
         <main>{children}</main>
+        {/* <ThemePanel /> */}
         
         </Theme>
         
