@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  --primary: #ffffff;      /* White */
+  --secondary: #121E3E;    /* Deep Navy Blue */
+  --softblue: #D9E2EF;     /* Soft Light Blue */
+  --steelblue: #A0B3CF;    /* Cool Steel Blue */
+}
+
+
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+section{
+  padding: 1rem;
+  height: 93vh;
+  overflow-y: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+section::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+
+}
+.custom-nav{
+  height: 4vh;
+  background-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 4px 6px -1px rgba(18, 30, 62, 0.1), 0 2px 4px -1px rgba(18, 30, 62, 0.06);
+}
+/* Backgrounds */
+.primary-bg {
+  background-color: var(--primary);
+}
+secondary-bg {
+  background-color: var(--secondary);
+}
+.softblue-bg {
+  background-color: var(--softblue);  
+}
+.steelblue-bg {
+  background-color: var(--steelblue);
+}
+
+.foreground-bg {
+  background-color: var(--foreground);
+}
+
+/* Text */
+
+.primary-text {
+  color: var(--primary);
+}
+.secondary-text {
+  color: var(--secondary);
+}
+.softblue-text {
+  color: var(--softblue);
+}
+.steelblue-text {
+  color: var(--steelblue);
+}
+
+.foreground-text {
+  color: var(--foreground);
+}
+/* Borders */
+.primary-border {
+  border-color: var(--primary);
+}
+.secondary-border {
+  border-color: var(--secondary);
+}
+.softblue-border {
+  border-color: var(--softblue);
+}
+.steelblue-border {
+  border-color: var(--steelblue);
+}
+.primary-border {
+  border-color: var(--primary);
+}
+.foreground-border {
+  border-color: var(--foreground);
+}
+/* Shadows */
+.primary-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.secondary-shadow {
+  box-shadow: 0 4px 6px -1px rgba(18, 30, 62, 0.1), 0 2px 4px -1px rgba(18, 30, 62, 0.06);
+}
+.softblue-shadow {
+  box-shadow: 0 4px 6px -1px rgba(217, 226, 239, 0.1), 0 2px 4px -1px rgba(217, 226, 239, 0.06);
+}
+.steelblue-shadow {
+  box-shadow: 0 4px 6px -1px rgba(160, 179, 207, 0.1), 0 2px 4px -1px rgba(160, 179, 207, 0.06);
+}
+.foreground-shadow {
+  box-shadow: 0 4px 6px -1px rgba(23, 23, 23, 0.1), 0 2px 4px -1px rgba(23, 23, 23, 0.06);
+}
+
