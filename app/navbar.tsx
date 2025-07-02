@@ -1,13 +1,20 @@
+'use client'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation';
 import React from 'react'
+import classNames from 'classnames';
 
 const NavaBar = () => {
 // Define the navigation bar items
 const navBarItems = [
   { name: 'Dashboard', path: '/' },
-  { name: 'Issues', path: '/about' },
+  { name: 'Issues', path: '/issues' },
   { name: 'Contact', path: '/contact' },
 ];
+
+const pathname = usePathname();
+
+console.log(pathname);
 
   return (
     <div className="px-4  custom-nav  navbar shadow-sm">
@@ -15,14 +22,24 @@ const navBarItems = [
     <a className="text-xl text-sky-950 font-bold">Issue Tracker</a>
   </div>
     <div className="flex-none text-black ">
-        <ul className="menu menu-horizontal p-0">
+        <ul className="flex space-x-4 text-md">
           
           {navBarItems.map((item) => (
-            <li key={item.name}>
-              <li className="mr-4 transition-all duration-200 font-bold text-sky-950 hover:text-sky-800 rounded-md">
+            
+              <li key={item.path} className={
+                classNames(
+                  {
+                     'text-sky-950': pathname === item.path,
+                    'mr-4 transition-all duration-200 font-bold text-sky-900 hover:text-sky-800 rounded-md': true,
+                    
+                   
+
+                  }
+                )
+              }>
             <Link href={item.path}>{item.name}</Link>
           </li>
-            </li>
+           
           ))}
         </ul>   
        
