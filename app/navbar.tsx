@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 import React from 'react'
 import classNames from 'classnames';
+import Image from 'next/image';
+import logo from "@/public/images/logo.png"
 
 const NavaBar = () => {
 // Define the navigation bar items
@@ -19,7 +21,12 @@ console.log(pathname);
   return (
     <div className="px-4  custom-nav  navbar shadow-sm">
   <div className="flex-1">
-    <a className="text-xl text-sky-950 font-bold">Issue Tracker</a>
+    <a className="text-xl text-sky-950 font-bold">
+      <span className="inline-block align-middle mr-2">
+        <Image src={logo} alt="logo" className="w-25 h-25  object-cover"  />
+      </span>
+     
+    </a>
   </div>
     <div className="flex-none text-black ">
         <ul className="flex space-x-4 text-md">
@@ -30,7 +37,7 @@ console.log(pathname);
                 classNames(
                   {
                      'text-sky-950': pathname === item.path,
-                    'mr-4 transition-all duration-200 font-bold text-sky-900 hover:text-sky-800 rounded-md': true,
+                    'mr-4 transition-all duration-200 font-bold text-sm text-sky-900 hover:text-sky-800 rounded-md': true,
                     
                    
 

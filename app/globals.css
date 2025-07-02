@@ -41,7 +41,7 @@ section::-webkit-scrollbar {
 .primary-bg {
   background-color: var(--primary);
 }
-secondary-bg {
+.secondary-bg {
   background-color: var(--secondary);
 }
 .softblue-bg {
