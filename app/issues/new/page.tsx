@@ -1,15 +1,25 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { TextArea, TextField } from '@radix-ui/themes'
+import { Callout, TextArea, TextField } from '@radix-ui/themes'
+import { useRouter } from 'next/navigation'
+import { set } from 'zod'
+import { createIssueSchema } from '@/app/validationSchemas'
 
 const NewIssuePage = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
+  
+  const [titleError, setTitleError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+  const [error, setError] = useState<{ title?: string; description?: string }>({});
+
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+   
     setLoading(true);
     try {
       const response = await fetch('/api/issues', {
@@ -23,15 +33,36 @@ const NewIssuePage = () => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create issue');
+
+      if (response.status == 400) {
+        const data = await response.json().catch(() => ({}));
+        // Reset errors first
+        setTitleError('');
+        setDescriptionError('');
+
+        // If Zod error, it should be in data.errors or data.fieldErrors
+        if (Array.isArray(data.errors)) {
+          data.errors.forEach((err: { path: string[]; message: string }) => {
+            if (err.path.includes('title')) setTitleError(err.message);
+            if (err.path.includes('description')) setDescriptionError(err.message);
+          });
+          return;
+        }
+        // fallback for other error formats
+        setTitleError(data?.message || 'Invalid input');
+        return;
       }
 
-      // Optionally handle success (e.g., show a message or redirect)
+
       setTitle('');
       setDescription('');
-    } catch (error) {
-      console.error(error);
+      router.push('/issues');
+    } catch (error: any) {
+      
+      if (error.message !== 'Validation error') {
+        setError(error.message || 'Something went wrong');
+      }
+     
     } finally {
       setLoading(false);
     }
@@ -44,6 +75,37 @@ const NewIssuePage = () => {
         onSubmit={handleSubmit}
       >
         <h2 className="text-2xl font-bold secondary-text text-center mb-2">Create New Issue</h2>
+
+        {
+          titleError && (
+           <Callout.Root color='red' className="mb-1 text-sm">
+	<Callout.Icon>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"/>
+    </svg>
+	</Callout.Icon>
+	<Callout.Text className="text-xs">
+           <p className="text-sm">{titleError}</p>
+	</Callout.Text>
+</Callout.Root>
+          )
+        }
+        {
+          descriptionError && (
+            <Callout.Root color='red' className="mb-2">
+	<Callout.Icon>
+		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"/>
+    </svg>
+	</Callout.Icon>
+	<Callout.Text className="text-sm">
+            <p className="text-sm">{descriptionError}</p>
+	</Callout.Text>
+</Callout.Root>
+          )
+        }
+
+        
         <div>
           <label htmlFor="title" className="block secondary-text text-lg font-semibold mb-1">
             Title
@@ -54,8 +116,9 @@ const NewIssuePage = () => {
             className="text-sm w-full"
             value={title}
             onChange={(e: any) => setTitle(e.target.value)}
-            required
+           
           />
+          
         </div>
         <div>
           <label htmlFor="description" className="block secondary-text text-lg font-semibold mb-1">
@@ -66,15 +129,16 @@ const NewIssuePage = () => {
             className="w-full min-h-[100px] text-sm"
             value={description}
             onChange={(e: any) => setDescription(e.target.value)}
-            required
+            
           />
+         
         </div>
         <Button
           type="submit"
           className="w-full secondary-bg py-5 text-lg text-zinc-400 hover:bg-sky-700 hover:text-zinc-100 transition-all duration-300 cursor-pointer"
           disabled={loading}
         >
-          {loading ? "Creating..." : "Create Issue"}
+          {loading ? "Creating..." : "Create new Issue"}
         </Button>
       </form>
     </section>
