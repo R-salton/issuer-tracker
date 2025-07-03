@@ -123,12 +123,23 @@ const NewIssuePage = () => {
           />
          
         </div>
-        <Button
-          type="submit"
-          className="w-full secondary-bg py-5 text-lg text-zinc-400 hover:bg-sky-700 hover:text-zinc-100 transition-all duration-300 cursor-pointer"
+       
+       <Button
+        type="submit"
+        
+          className="pointer-cursor items-center rounded secondary-bg py-5 text-lg text-zinc-400 hover:bg-sky-700 hover:text-zinc-600 transition-all duration-300 cursor-pointer"
           disabled={loading}
-        >
-          {loading ? "Creating..." : "Create new Issue"}
+          
+          >
+          { 
+            loading && <div
+            className="inline-block h-6 w-6 mr-2 animate-spin rounded-full border-2 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+            role="status"></div>
+            
+          }
+            {loading ? "Creating..." : "Create new Issue"}
+
+ 
         </Button>
       </form>
     </section>
