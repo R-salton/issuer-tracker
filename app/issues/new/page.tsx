@@ -5,6 +5,7 @@ import { Callout, TextArea, TextField } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import { set } from 'zod'
 import { createIssueSchema } from '@/app/validationSchemas'
+import ErrorMessage from '@/app/components/errorMessage'
 
 const NewIssuePage = () => {
   const [title, setTitle] = useState('');
@@ -76,20 +77,9 @@ const NewIssuePage = () => {
       >
         <h2 className="text-2xl font-bold secondary-text text-center mb-2">Create New Issue</h2>
 
-        {
-          titleError && (
-           <Callout.Root color='red' className="mb-1 text-sm">
-	<Callout.Icon>
-		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"/>
-    </svg>
-	</Callout.Icon>
-	<Callout.Text className="text-xs">
-           <p className="text-sm">{titleError}</p>
-	</Callout.Text>
-</Callout.Root>
-          )
-        }
+        <ErrorMessage>
+          {titleError}
+        </ErrorMessage>
         {
           descriptionError && (
             <Callout.Root color='red' className="mb-2">
