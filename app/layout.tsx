@@ -36,6 +36,8 @@ export default function RootLayout({
         {/* <ThemePanel /> */}
         
         </Theme>
+
+        <script src="https://kit.fontawesome.com/d9d509c70a.js" crossOrigin="anonymous"></script>
         
       </body>
     </html>

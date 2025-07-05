@@ -5,6 +5,7 @@ import axios from 'axios'
 import Link from 'next/link'
 import { FiEye } from 'react-icons/fi'
 import DeleteIssueBtn from './DeleteIssueBtn'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Issue {
   id: number;
@@ -34,47 +35,44 @@ const IssuesPage = () => {
         <Button className="w-full sm:w-auto">Issues Page</Button>
       </div>
       <div className="overflow-x-auto rounded-lg shadow">
-        <Table.Root variant="surface" className="min-w-[400px] w-full">
-          <Table.Header>
-            <Table.Row>
-              <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Description</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Status</Table.ColumnHeaderCell>
-              <Table.ColumnHeaderCell>Action</Table.ColumnHeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {loading ? (
-              <Table.Row>
-                <Table.Cell colSpan={4} className="text-center">Loading...</Table.Cell>
-              </Table.Row>
-            ) : issues.length === 0 ? (
-              <Table.Row>
-                <Table.Cell colSpan={4} className="text-center">No issues found.</Table.Cell>
-              </Table.Row>
-            ) : (
-              issues.map((issue: Issue) => (
-                <Table.Row key={issue.id}>
-                  <Table.RowHeaderCell>{issue.title}</Table.RowHeaderCell>
-                  <Table.Cell>{issue.description}</Table.Cell>
-                  <Table.Cell>{issue.status}</Table.Cell>
-                  <Table.Cell>
-                    <div className="flex gap-3">
-                      <Link
-                        href={`/issues/${issue.id}`}
-                        className="text-secondary hover:text-softblue transition"
-                        title="View Issue"
-                      >
-                        <FiEye size={20} />
-                      </Link>
-                      <DeleteIssueBtn issue={issue} onDeleted={fetchIssues} />
+        <div className="w-full overflow-x-auto">
+          <table className="w-full min-w-[320px] sm:min-w-[480px] md:min-w-[600px] text-xs sm:text-sm md:text-base">
+            <thead>
+              <tr className="bg-gray-100 text-sky-950">
+                <th className="py-2 px-3 text-left">Title</th>
+                <th className="hidden md:table-cell py-2 px-3 text-left">Description</th>
+                <th className="hidden md:table-cell py-2 px-3 text-left">Status</th>
+                <th className="py-2 px-3 text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {issues.map((issue) => (
+                <tr key={issue.id} className="text-sky-950 hover:bg-softblue transition border-b-1 border-gray-300">
+                  <td className="py-2 px-3">{issue.title}
+                    <div className='block mt-2 bg-green-100 text-green-700 w-14 text-center
+                    p-2 rounded-lg md:hidden'>{issue.status}</div>
+                  </td>
+                  
+                  <td className="hidden md:table-cell py-2 px-3">{issue.description}
+                    
+                  </td>
+                  <td className="hidden md:table-cell py-2 px-3">
+                    <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-700 text-xs">
+                      {issue.status}
+                    </span>
+                  </td>
+                  <td className="py-2 px-3">
+                    <div className="flex items-center gap-4 text-lg">
+                      <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-pen"></i>
+                      <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-ellipsis-vertical"></i>
+                      <i className="cursor-pointer text-red-500 hover:text-sky-700 transition-colors duration-400 fa-solid fa-trash-can"></i>
                     </div>
-                  </Table.Cell>
-                </Table.Row>
-              ))
-            )}
-          </Table.Body>
-        </Table.Root>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </section>
   )
