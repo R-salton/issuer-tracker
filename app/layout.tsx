@@ -32,7 +32,13 @@ export default function RootLayout({
         <Theme>
 
         <NavaBar />
-        <main>{children}</main>
+
+        <main>
+          <section>
+            
+          {children}
+          </section>
+          </main>
         {/* <ThemePanel /> */}
         
         </Theme>

@@ -1,33 +1,50 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import { Button, Table } from '@radix-ui/themes'
+import {  Button} from '@radix-ui/themes'
 import axios from 'axios'
+
+import { IssueStatus } from '../generated/prisma'
+import IssueStatusBadge from './issueStatusBadge'
+
 import Link from 'next/link'
-import { FiEye } from 'react-icons/fi'
-import DeleteIssueBtn from './DeleteIssueBtn'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 interface Issue {
   id: number;
   title: string;
   description: string;
   status: string;
+  createdAt: string;
 }
 
-const IssuesPage = () => {
+
+const IssuesPage =  () => {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchIssues = async () => {
+  const fetchIssues = async (): Promise<void> => {
     setLoading(true);
-    const { data } = await axios.get<Issue[]>('/api/issues');
-    setIssues(data);
+    const data  = await fetch('http://localhost:3000/api/issues', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!data.ok) {
+      throw new Error('Failed to fetch issues');
+    }
+    const issues = await data.json();
+    setIssues(issues);
     setLoading(false);
-  };
 
+  };
   useEffect(() => {
     fetchIssues();
   }, []);
+
+
+
+
+  // Simulate loading delay
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
@@ -40,8 +57,9 @@ const IssuesPage = () => {
             <thead>
               <tr className="bg-gray-100 text-sky-950">
                 <th className="py-2 px-3 text-left">Title</th>
-                <th className="hidden md:table-cell py-2 px-3 text-left">Description</th>
+               
                 <th className="hidden md:table-cell py-2 px-3 text-left">Status</th>
+                <th className="hidden md:table-cell py-2 px-3 text-left">Created At</th>
                 <th className="py-2 px-3 text-left">Actions</th>
               </tr>
             </thead>
@@ -49,22 +67,32 @@ const IssuesPage = () => {
               {issues.map((issue) => (
                 <tr key={issue.id} className="text-sky-950 hover:bg-softblue transition border-b-1 border-gray-300">
                   <td className="py-2 px-3">{issue.title}
-                    <div className='block mt-2 bg-green-100 text-green-700 w-14 text-center
-                    p-2 rounded-lg md:hidden'>{issue.status}</div>
+                    <div className=' text-green-700 w-14 text-center p-2 rounded-lg md:hidden'>
+                      <IssueStatusBadge status={issue.status as IssueStatus} />
+                    </div>
                   </td>
                   
-                  <td className="hidden md:table-cell py-2 px-3">{issue.description}
+                 
                     
+                  
+                  <td className="hidden md:table-cell py-2 px-3">
+                   <IssueStatusBadge status={issue.status as IssueStatus} />
                   </td>
                   <td className="hidden md:table-cell py-2 px-3">
-                    <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-700 text-xs">
-                      {issue.status}
-                    </span>
+                    {new Date(issue.createdAt).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                    })}
                   </td>
                   <td className="py-2 px-3">
-                    <div className="flex items-center gap-4 text-lg">
+                    <div className="flex items-center gap-8 text-lg">
                       <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-pen"></i>
+                      <Link href={`/issues/${issue.id}`}>
                       <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-ellipsis-vertical"></i>
+                      </Link>
                       <i className="cursor-pointer text-red-500 hover:text-sky-700 transition-colors duration-400 fa-solid fa-trash-can"></i>
                     </div>
                   </td>
