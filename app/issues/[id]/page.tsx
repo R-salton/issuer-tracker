@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import DeleteBtn from './DeleteBtn';
+import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 
 interface Props {
   params: Promise<{
@@ -8,12 +9,7 @@ interface Props {
   }>
 }
 
-interface Issue {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-}
+
 
 const IssueDetailsPage = async ({ params }: Props) => {
   const id = parseInt((await params).id);
@@ -30,27 +26,30 @@ const IssueDetailsPage = async ({ params }: Props) => {
     return <div className="text-red-600 p-8">Issue not found.</div>;
   }
 
-  const issue: Issue = await res.json();
+  const issue = await res.json();
 
   return (
     <div className=" mx-auto mt-10 bg-white rounded-xl p-8">
         <Link href="/issues" className="text-blue-600 hover:underline mb-4 inline-block">
          <i className="absolute top-20 left-12 text-white hover:text-sky-700  transition-colors duration-400 btn-circle bg-sky-950 p-2  fa-solid fa-arrow-left"></i>
         </Link>
-      <h1 className="text-3xl font-bold secondary-text mb-4">{issue.title}</h1>
-      <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
-        <div>
-          <span className="font-semibold text-sky-950">Status: </span>
+      <Heading className="text-3xl font-bold secondary-text mb-4">{issue.title}</Heading>
+      <Flex className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 mt-4">
+       
+         
           <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-700 text-xs">{issue.status}</span>
-        </div>
+          <Text className="text-gray-500 text-sm">
+            {new Date(issue.createdAt).toLocaleString()}
+          </Text>
+        
         {/* You can add more meta info here if needed */}
-      </div>
-      <div className="mb-8">
-        <span className="font-semibold text-sky-950">Description:</span>
+      </Flex>
+      <Card className="mb-8 text-lg">
+      
         <p className="mt-2 text-gray-700">{issue.description}</p>
-      </div>
+      </Card>
       {/* Actions Section */}
-      <div className="border-t pt-6 flex flex-col sm:flex-row gap-4">
+      <div className=" pt-6 flex flex-col sm:flex-row gap-4">
         <Link
           href={`/issues/${issue.id}/edit`}
           className="px-8 py-2 flex  justify-center items-center rounded  text-sm border-1 border-sky-950 font-semibold hover:bg-sky-950 hover:text-white transition  duration-400 text-center"
@@ -63,7 +62,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
         >
           Assign
         </button>
-        <DeleteBtn />
+        <DeleteBtn id={issue.id} />
       </div>
     </div>
   )

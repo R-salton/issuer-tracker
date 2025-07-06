@@ -5,14 +5,14 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 
 
-const IssueLoadingPage = () => {
-const issues = [1,2,3,4,5,6,7,8,9,10]
+const loading = () => {
+const issues = [1,2,3,4,5,6]
 
   return (
     
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
       <div className="flex flex-col items-center mb-6">
-        <Button className="w-full sm:w-auto">Issues Page</Button>
+        <Skeleton width={100} height={20} />
       </div>
       <div className="overflow-x-auto rounded-lg shadow">
         <div className="w-full overflow-x-auto">
@@ -59,4 +59,4 @@ const issues = [1,2,3,4,5,6,7,8,9,10]
   )
 }
 
-export default IssueLoadingPage
+export default loading

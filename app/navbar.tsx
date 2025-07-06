@@ -23,9 +23,9 @@ const NavaBar = () => {
         {/* Logo */}
         <a className="text-xl text-sky-950 font-bold flex items-center">
           <span className="inline-block align-middle mr-2">
-            <Image src={logo} alt="logo" className="w-8 h-8 object-cover" />
+            <Image src={logo} alt="logo" className="w-30 h-30 object-cover" />
           </span>
-          Issuer Tracker
+         
         </a>
 
         {/* Hamburger for mobile */}

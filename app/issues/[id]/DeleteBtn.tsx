@@ -1,6 +1,5 @@
-'use client'
-import Link from 'next/link'
-import React from 'react'
+'use client';
+import React, { useState } from 'react'
 import {
   Dialog,
   DialogClose,
@@ -12,13 +11,38 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button'
+import { useRouter } from 'next/navigation'
 
-const DeleteBtn = () => {
+interface Props {
+  id: number;
+}
+
+const DeleteBtn = ({ id }: Props) => {
+  const router = useRouter()
+  const [successOpen, setSuccessOpen] = useState(false);
+
+  const handleDelete = async () => {
+    const response = await fetch(`http://localhost:3000/api/issues/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      console.error('Failed to delete issue');
+      return;
+    }
+    setSuccessOpen(true);
+    setTimeout(() => {
+      setSuccessOpen(false);
+      router.push('/issues');
+    }, 1500);
+  };
 
   return (
     <>
-   <Dialog>
-      
+      <Dialog>
         <DialogTrigger asChild>
           <Button variant="outline">
             <i className="fa-solid fa-trash-can mr-2 text-red-600"></i>
@@ -29,27 +53,30 @@ const DeleteBtn = () => {
           <DialogHeader>
             <DialogTitle className='text-lg text-sky-950'>Do you want to delete this issue?</DialogTitle>
             <DialogDescription className='text-sm text-gray-500'>
-                This action cannot be undone. Are you sure you want to delete this issue?
+              This action cannot be undone. Are you sure you want to delete this issue?
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4">
-            <div className="grid gap-3">
-             
-            </div>
-            <div className="grid gap-3">
-              
-            </div>
-          </div>
           <DialogFooter className='flex justify-between items-center'>
-            <DialogClose asChild className=''>
-              <Button className='text-sky-900 w-xm' variant="outline">Cancel</Button>
+            <DialogClose asChild>
+              <Button className='text-sky-900 w-xm hover:bg-sky-900 hover:text-white transition-all duration-300' variant="outline">Cancel</Button>
             </DialogClose>
-            <Button className='text-red-600' variant="outline">Delete</Button>
+            <Button onClick={handleDelete} className='text-red-600 hover:bg-red-400' variant="outline">Delete</Button>
           </DialogFooter>
         </DialogContent>
-      
-    </Dialog>
-</>
+      </Dialog>
+
+      {/* Success Dialog */}
+      <Dialog open={successOpen}>
+        <DialogContent showCloseButton={false} className=" sm:max-w-[200px] h-[200px] rounded-full  bg-white flex flex-col justify-center items-center">
+          <DialogHeader>
+            <DialogTitle className='text-green-700 text-lg text-center'>Issue deleted successfully!</DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-center mt-2">
+            <i className="fa-solid fa-circle-check text-green-500 text-3xl"></i>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 

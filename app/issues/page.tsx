@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import {  Button} from '@radix-ui/themes'
-import axios from 'axios'
+import delay from 'delay'
 
 import { IssueStatus } from '../generated/prisma'
 import IssueStatusBadge from './issueStatusBadge'
@@ -16,6 +16,7 @@ interface Issue {
   createdAt: string;
 }
 
+delay(2000) // Simulate loading delay
 
 const IssuesPage =  () => {
   const [issues, setIssues] = useState<Issue[]>([]);
@@ -88,10 +89,10 @@ const IssuesPage =  () => {
                     })}
                   </td>
                   <td className="py-2 px-3">
-                    <div className="flex items-center gap-8 text-lg">
+                    <div className="flex items-center gap-4 text-lg">
                       <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-pen"></i>
-                      <Link href={`/issues/${issue.id}`}>
-                      <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-ellipsis-vertical"></i>
+                      <Link href={`/issues/${issue.id}`} className='flex items-center gap-2'>
+                      <p className='text-xs'>View</p>
                       </Link>
                       <i className="cursor-pointer text-red-500 hover:text-sky-700 transition-colors duration-400 fa-solid fa-trash-can"></i>
                     </div>
