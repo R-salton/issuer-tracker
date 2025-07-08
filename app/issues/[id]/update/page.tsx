@@ -124,9 +124,9 @@ const id = parseInt((idRaw as unknown as string).toString());
           <label htmlFor="description" className="block secondary-text text-lg font-semibold mb-1">
             Description
           </label>
-          <TextArea
+          <textarea
             placeholder="Description…"
-            className="w-full min-h-[100px] text-sm"
+            className="extarea bg-white w-full min-h-[150px] text-sm border-1 border-gray-300 focus:border-sky-900 focus:ring-0 focus:border-0 transition"
             value={description}
             onChange={(e: any) => setDescription(e.target.value)}
           />

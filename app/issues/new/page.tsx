@@ -2,10 +2,10 @@
 'use client'
 import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
-import { Callout, TextArea, TextField } from '@radix-ui/themes'
+import { Callout, TextField } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import ErrorMessage from '@/app/components/errorMessage'
-
+import { Textarea } from '@/components/ui/textarea'
 const NewIssuePage = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -113,13 +113,13 @@ const NewIssuePage = () => {
           <label htmlFor="description" className="block secondary-text text-lg font-semibold mb-1">
             Description
           </label>
-          <TextArea
-            placeholder="Description…"
-            className="w-full min-h-[100px] text-sm"
-            value={description}
-            onChange={(e: any) => setDescription(e.target.value)}
-            
-          />
+         
+        <textarea
+  placeholder="Description…"
+  className="textarea bg-white w-full min-h-[150px] text-sm border-1 border-gray-300 focus:border-sky-900 focus:ring-0 focus:border-0 transition"
+  value={description}
+  onChange={(e: any) => setDescription(e.target.value)}
+/>
          
         </div>
        
