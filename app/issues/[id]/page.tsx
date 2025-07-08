@@ -1,8 +1,8 @@
-import React from 'react'
-import Link from 'next/link'
-import DeleteBtn from './DeleteBtn';
-import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 import IssueStatusBadge from '@/app/components/issueStatusBadge';
+import { Card, Flex, Heading, Text } from '@radix-ui/themes';
+import Link from 'next/link';
+import DeleteBtn from './DeleteBtn';
+import Editbtn from './Editbtn';
 
 interface Props {
   params: Promise<{
@@ -51,13 +51,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
       </Card>
       {/* Actions Section */}
       <div className=" pt-6 flex flex-col sm:flex-row gap-4">
-        <Link
-          href={`/issues/${issue.id}/update`}
-          className="px-8 py-2 flex  justify-center items-center rounded  text-sm border-1 border-sky-950 font-semibold hover:bg-sky-950 hover:text-white transition  duration-400 text-center"
-        >
-            <i className="fa-solid fa-pen mr-2"></i>
-          <p>Edit</p>
-        </Link>
+       <Editbtn id={issue.id} />
         <button
           className="px-5 py-2 rounded bg-sky-950 primary-text text-sm font-semibold hover:bg-sky-900 hover:text-white transition duration-400 text-center"
         >

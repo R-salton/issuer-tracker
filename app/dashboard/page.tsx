@@ -1,8 +1,7 @@
 'use client'
-import React from 'react'
-import { FaBug, FaCheckCircle, FaHourglassHalf, FaUsers } from 'react-icons/fa'
+import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, Tooltip } from 'chart.js'
 import { Bar, Doughnut } from 'react-chartjs-2'
-import { Chart, CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend } from 'chart.js'
+import { FaBug, FaCheckCircle, FaHourglassHalf, FaUsers } from 'react-icons/fa'
 
 Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend)
 

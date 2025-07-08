@@ -8,7 +8,7 @@ import logo from "@/public/images/logo.png"
 
 const NavaBar = () => {
   const navBarItems = [
-    { name: 'Dashboard', path: '/' },
+    { name: 'Dashboard', path: '/dashboard' },
     { name: 'Issues', path: '/issues' },
     { name: "Create New issue", path: "/issues/new" },
     { name: 'Contact', path: '/contact' },
@@ -21,12 +21,14 @@ const NavaBar = () => {
     <nav className="px-4 custom-nav navbar shadow-sm bg-primary sticky top-0 z-50">
       <div className="flex items-center justify-between w-full">
         {/* Logo */}
-        <a className="text-xl text-sky-950 font-bold flex items-center">
+       
           <span className="inline-block align-middle mr-2">
-            <Image src={logo} alt="logo" className="w-30 h-30 object-cover" />
+          <Link href="/">
+            <Image src={logo} alt="logo" className="w-20 h-20 object-cover" />
+          </Link>
           </span>
          
-        </a>
+        
 
         {/* Hamburger for mobile */}
         <button

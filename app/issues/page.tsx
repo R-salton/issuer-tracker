@@ -1,12 +1,11 @@
 'use client'
-import React, { useEffect, useState } from 'react'
-import {  Button} from '@radix-ui/themes'
 import delay from 'delay'
-
-import { IssueStatus } from '../generated/prisma'
+import { useEffect, useState } from 'react'
 import IssueStatusBadge from '../components/issueStatusBadge'
+import { IssueStatus } from '../generated/prisma'
 
 import Link from 'next/link'
+import DeleteIssueBtn from './DeleteIssueBtn'
 
 interface Issue {
   id: number;
@@ -104,7 +103,7 @@ const IssuesPage =  () => {
                       <Link href={`/issues/${issue.id}`} className='flex items-center gap-2'>
                       <p className='text-xs'>View</p>
                       </Link>
-                      <i className="cursor-pointer text-red-500 hover:text-sky-700 transition-colors duration-400 fa-solid fa-trash-can"></i>
+                      <DeleteIssueBtn issue={issue} onDeleted={() => setIssues(issues.filter((i) => i.id !== issue.id))} />
                     </div>
                   </td>
                 </tr>

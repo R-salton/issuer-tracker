@@ -1,12 +1,12 @@
 "use client";
 import { ErrorMessage } from "@/app/components";
-import { Callout, TextField, TextArea, Button, Select } from "@radix-ui/themes";
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { IssueStatus } from "@/app/generated/prisma"; // <-- import your enum
+import { Button, Callout, Select, TextArea, TextField } from "@radix-ui/themes";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 interface Params {
-  id: string;
+  id: Promise<string>;
 }
 
 // Dynamically get status options from IssueStatus enum
@@ -16,6 +16,9 @@ const statusOptions = Object.entries(IssueStatus).map(([value, label]) => ({
 }));
 
 const UpdatingIssuePage = ({ params }: { params: Params }) => {
+const idRaw = params.id;
+const id = parseInt((idRaw as unknown as string).toString());
+
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -29,7 +32,7 @@ const UpdatingIssuePage = ({ params }: { params: Params }) => {
   useEffect(() => {
     const fetchIssue = async () => {
       try {
-        const res = await fetch(`/api/issues/${params.id}`);
+        const res = await fetch(`/api/issues/${id}`);
         if (!res.ok) throw new Error("Failed to fetch issue");
         const data = await res.json();
         setTitle(data.title);
@@ -41,7 +44,7 @@ const UpdatingIssuePage = ({ params }: { params: Params }) => {
     };
     fetchIssue();
     // eslint-disable-next-line
-  }, [params.id]);
+  }, [id]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

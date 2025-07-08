@@ -1,6 +1,5 @@
-import React from 'react'
-import { Badge } from '@radix-ui/themes'
 import { IssueStatus } from '@/app/generated/prisma'
+import { Badge } from '@radix-ui/themes'
 
 const statusMap: Record<IssueStatus,{label: string, color: "blue" | "yellow" | "green"}> = {
     OPEN: {label: 'Open', color: 'blue'},

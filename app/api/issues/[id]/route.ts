@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server'
-import prisma from '@/prisma/client'
-import { z } from 'zod'
 import { IssueStatus } from '@/app/generated/prisma';
+import prisma from '@/prisma/client';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 // Define your validation schema
 const issueSchema = z.object({
