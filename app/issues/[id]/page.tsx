@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import DeleteBtn from './DeleteBtn';
 import { Card, Flex, Heading, Text } from '@radix-ui/themes';
+import IssueStatusBadge from '@/app/components/issueStatusBadge';
 
 interface Props {
   params: Promise<{
@@ -37,7 +38,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
       <Flex className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 mt-4">
        
          
-          <span className="inline-block px-2 py-1 rounded bg-green-100 text-green-700 text-xs">{issue.status}</span>
+          <IssueStatusBadge status={issue.status} />
           <Text className="text-gray-500 text-sm">
             {new Date(issue.createdAt).toLocaleString()}
           </Text>
@@ -51,7 +52,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
       {/* Actions Section */}
       <div className=" pt-6 flex flex-col sm:flex-row gap-4">
         <Link
-          href={`/issues/${issue.id}/edit`}
+          href={`/issues/${issue.id}/update`}
           className="px-8 py-2 flex  justify-center items-center rounded  text-sm border-1 border-sky-950 font-semibold hover:bg-sky-950 hover:text-white transition  duration-400 text-center"
         >
             <i className="fa-solid fa-pen mr-2"></i>

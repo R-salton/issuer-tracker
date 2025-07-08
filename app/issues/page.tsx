@@ -4,7 +4,7 @@ import {  Button} from '@radix-ui/themes'
 import delay from 'delay'
 
 import { IssueStatus } from '../generated/prisma'
-import IssueStatusBadge from './issueStatusBadge'
+import IssueStatusBadge from '../components/issueStatusBadge'
 
 import Link from 'next/link'
 
@@ -49,9 +49,19 @@ const IssuesPage =  () => {
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
-      <div className="flex flex-col items-center mb-6">
-        <Button className="w-full sm:w-auto">Issues Page</Button>
+    <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 className="text-2xl font-bold text-sky-900 mb-1">Issues Tracker</h1>
+        <p className="text-gray-600 max-w-2xl text-sm sm:text-base">
+      View and manage all your project issues here. Track status, review details, and take action quickly. 
+        </p>
       </div>
+      <Link href="/issues/new">
+        <button className="w-full sm:w-auto bg-sky-950 text-white px-3 py-2 rounded text-sm hover:bg-sky-900 transition-colors duration-300"  >
+      + New Issue
+        </button>
+      </Link>
+    </div>
       <div className="overflow-x-auto rounded-lg shadow">
         <div className="w-full overflow-x-auto">
           <table className="w-full min-w-[320px] sm:min-w-[480px] md:min-w-[600px] text-xs sm:text-sm md:text-base">

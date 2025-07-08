@@ -4,8 +4,6 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Callout, TextArea, TextField } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
-import { set } from 'zod'
-import { createIssueSchema } from '@/app/validationSchemas'
 import ErrorMessage from '@/app/components/errorMessage'
 
 const NewIssuePage = () => {

@@ -44,7 +44,7 @@ const DeleteBtn = ({ id }: Props) => {
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline">
+          <Button variant="outline" className='text-red-600 hover:bg-red-400 hover:text-white transition-all duration-300'>
             <i className="fa-solid fa-trash-can mr-2 text-red-600"></i>
             <p className='text-sm text-red-600'>Delete</p>
           </Button>

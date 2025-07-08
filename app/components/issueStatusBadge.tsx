@@ -2,13 +2,13 @@ import React from 'react'
 import { Badge } from '@radix-ui/themes'
 import { IssueStatus } from '@/app/generated/prisma'
 
-const statusMap: Record<IssueStatus,{label: string, color: "red" | "yellow" | "green"}> = {
-    OPEN: {label: 'Open', color: 'green'},
+const statusMap: Record<IssueStatus,{label: string, color: "blue" | "yellow" | "green"}> = {
+    OPEN: {label: 'Open', color: 'blue'},
     ON_PROGRESS: {label: 'On Progress', color: 'yellow'},
-    CLOSED: {label: 'Closed', color: 'red'},
+    CLOSED: {label: 'Closed', color: 'green'},
 }
 
-const issueStatusBadge = ({status}: {status: IssueStatus}) => {
+const IssueStatusBadge = ({status}: {status: IssueStatus}) => {
 
   return (
     <div>
@@ -19,4 +19,4 @@ const issueStatusBadge = ({status}: {status: IssueStatus}) => {
   )
 }
 
-export default issueStatusBadge
+export default IssueStatusBadge
