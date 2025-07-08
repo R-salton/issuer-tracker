@@ -16,11 +16,15 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the 
+
 
 ## Screen shots
-
+### Landing page
 ![Screenshot from 2025-07-08 13-18-28](https://github.com/user-attachments/assets/4b5af2fe-6e55-4c6f-a3dd-ae01e8e4a233)
+### Dashoard
+file:///home/sadev/Pictures/Screenshots/Screenshot%20from%202025-07-08%2013-22-45.png
 
 ## Learn More
 
