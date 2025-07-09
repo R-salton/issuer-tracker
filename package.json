@@ -20,6 +20,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/themes": "^3.2.1",
     "axios": "^1.10.0",
+    "bcrypt": "^6.0.0",
     "chart.js": "^4.5.0",
     "class-variance-authority": "^0.7.1",
     "classnames": "^2.5.1",
@@ -40,6 +41,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

@@ -25,7 +25,7 @@ const NavaBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const {status, data: session} = useSession();
-  console.log(status, session);
+ 
 
   return (
     <nav className="px-4 custom-nav navbar shadow-sm bg-primary sticky top-0 z-50">
