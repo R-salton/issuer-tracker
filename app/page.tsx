@@ -3,6 +3,8 @@ import React from 'react'
 import Link from 'next/link'
 
 export default function LandingPage() {
+
+  const logedIn = false; // Replace with actual authentication logic
   return (
     <main className="bg-white min-h-screen flex flex-col">
       {/* Hero Section */}

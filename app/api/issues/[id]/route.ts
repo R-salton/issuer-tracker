@@ -10,12 +10,16 @@ const issueSchema = z.object({
   status: z.string().optional(),
 });
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const { id } = params;
+interface Paramas{
+  id: Promise<string>;
+}
+
+export async function GET(request: Request, { params }: { params: Paramas }) {
+  const  id  = await params;
 
   const issue = await prisma.issue.findUnique({
     where: {
-      id: parseInt(id),
+      id: parseInt(await id.id),
     },
   });
  

@@ -28,6 +28,9 @@ const IssuesPage =  () => {
       headers: {
         'Content-Type': 'application/json',
       },
+      next:{
+        revalidate: 3600, // Revalidate every 60 seconds
+      }
     });
     if (!data.ok) {
       throw new Error('Failed to fetch issues');
