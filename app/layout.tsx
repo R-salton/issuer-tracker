@@ -6,6 +6,8 @@ import "./theme-config.css"
 import NavaBar from "./navbar";
 
 import { Theme, ThemePanel } from "@radix-ui/themes";
+import { SessionProvider } from "next-auth/react";
+import AuthProvider from "./AuthProvider";
 
 
 const poppins = Poppins({
@@ -29,6 +31,7 @@ export default function RootLayout({
       <body
           className="font-poppins"
       >
+        <AuthProvider>
         <Theme>
 
         <NavaBar />
@@ -44,7 +47,7 @@ export default function RootLayout({
         </Theme>
 
         <script src="https://kit.fontawesome.com/d9d509c70a.js" crossOrigin="anonymous"></script>
-        
+        </AuthProvider>
       </body>
     </html>
   );
