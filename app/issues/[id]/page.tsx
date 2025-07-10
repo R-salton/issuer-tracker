@@ -5,6 +5,7 @@ import DeleteBtn from './DeleteBtn';
 import Editbtn from './Editbtn';
 import { getServerSession } from 'next-auth';
 import AuthOptions from '@/app/auth/AuthOptions';
+import AssignBtn from '../AssignBtn';
 
 interface Props {
   params: Promise<{
@@ -58,11 +59,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
         session && 
           <div className=" pt-6 flex flex-col sm:flex-row gap-4">
        <Editbtn id={issue.id} />
-        <button
-          className="px-5 py-2 rounded bg-sky-950 primary-text text-sm font-semibold hover:bg-sky-900 hover:text-white transition duration-400 text-center"
-        >
-          Assign
-        </button>
+       <AssignBtn />
         <DeleteBtn id={issue.id} />
       </div>
         
