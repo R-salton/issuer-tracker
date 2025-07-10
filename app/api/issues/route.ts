@@ -1,10 +1,21 @@
 import { NextRequest, NextResponse } from "next/server"
 import prisma from "@/prisma/client"
 import { createIssueSchema } from "../../validationSchemas"
+import { getServerSession } from 'next-auth'
+import AuthOptions from '@/app/auth/AuthOptions'
 
 export async function POST(Request: NextRequest){
 const body = await Request.json()
+const session = await getServerSession(AuthOptions);
+
+
+// Check if user is authenticated
+if (!session) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+
 const validation = createIssueSchema.safeParse(body)
+
 
 if(!validation.success){
 
@@ -16,6 +27,7 @@ if(!validation.success){
     return NextResponse.json({ errors }, { status: 400 });
 }
     
+
 
 const newIssue = await prisma.issue.create({
     data: {
@@ -50,6 +62,11 @@ interface Issue {
 export async function DELETE(request: NextRequest,{ params }: { params:Promise< { id: string }> }) {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
+    const session = await getServerSession(AuthOptions);
+    // Check if user is authenticated
+    if (!session) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+    }
 
     if (!id) {
         return NextResponse.json({ error: 'Issue ID is required' }, { status: 400 });

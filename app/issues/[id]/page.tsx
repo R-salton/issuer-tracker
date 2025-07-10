@@ -3,6 +3,8 @@ import { Card, Flex, Heading, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import DeleteBtn from './DeleteBtn';
 import Editbtn from './Editbtn';
+import { getServerSession } from 'next-auth';
+import AuthOptions from '@/app/auth/AuthOptions';
 
 interface Props {
   params: Promise<{
@@ -14,6 +16,8 @@ interface Props {
 
 const IssueDetailsPage = async ({ params }: Props) => {
   const id = parseInt((await params).id);
+
+  const session  = await getServerSession(AuthOptions);
 
   const res = await fetch(`http://localhost:3000/api/issues/${id}`, {
     method: 'GET',
@@ -31,7 +35,7 @@ const IssueDetailsPage = async ({ params }: Props) => {
 
   return (
     <div className=" mx-auto mt-10 bg-white rounded-xl p-8">
-        <Link href="/issues" className="text-blue-600 hover:underline mb-4 inline-block">
+        <Link href="/issues" className="text-blue-600 hover:underline mb-4 inline-block" >
          <i className="absolute top-20 left-12 text-white hover:text-sky-700  transition-colors duration-400 btn-circle bg-sky-950 p-2  fa-solid fa-arrow-left"></i>
         </Link>
       <Heading className="text-3xl font-bold secondary-text mb-4">{issue.title}</Heading>
@@ -49,8 +53,10 @@ const IssueDetailsPage = async ({ params }: Props) => {
       
         <p className="mt-2 text-gray-700">{issue.description}</p>
       </Card>
-      {/* Actions Section */}
-      <div className=" pt-6 flex flex-col sm:flex-row gap-4">
+      {/* Actions Section */} 
+      {
+        session && 
+          <div className=" pt-6 flex flex-col sm:flex-row gap-4">
        <Editbtn id={issue.id} />
         <button
           className="px-5 py-2 rounded bg-sky-950 primary-text text-sm font-semibold hover:bg-sky-900 hover:text-white transition duration-400 text-center"
@@ -59,6 +65,8 @@ const IssueDetailsPage = async ({ params }: Props) => {
         </button>
         <DeleteBtn id={issue.id} />
       </div>
+        
+      }
     </div>
   )
 }

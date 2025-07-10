@@ -2,6 +2,8 @@ import { IssueStatus } from '@/app/generated/prisma';
 import prisma from '@/prisma/client';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getServerSession } from 'next-auth'
+import AuthOptions from '@/app/auth/AuthOptions'
 
 // Define your validation schema
 const issueSchema = z.object({
@@ -58,6 +60,14 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = await request.json();
+  const session = await getServerSession(AuthOptions);
+
+
+  // Check if user is authenticated
+  if (!session) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
+  }
+
 
   // Validate input
   const result = issueSchema.safeParse(data);
@@ -65,9 +75,10 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json(
       { errors: result.error.errors.map(e => ({ path: e.path, message: e.message })) },
       { status: 400 }
-    );
+    ); 
   }
 
+  // Check if issue exists
   const issue = await prisma.issue.findUnique({
     where: {
       id: parseInt(id),

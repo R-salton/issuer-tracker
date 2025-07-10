@@ -7,6 +7,7 @@ import { IssueStatus } from '../generated/prisma'
 import Link from 'next/link'
 import DeleteIssueBtn from './DeleteIssueBtn'
 
+
 interface Issue {
   id: number;
   title: string;
@@ -15,11 +16,14 @@ interface Issue {
   createdAt: string;
 }
 
-delay(2000) // Simulate loading delay
+// delay(2000) // Simulate loading delay
 
-const IssuesPage =  () => {
+const IssuesPage = () => {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
+  
+
+ 
 
   const fetchIssues = async (): Promise<void> => {
     setLoading(true);
@@ -28,10 +32,12 @@ const IssuesPage =  () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      next:{
-        revalidate: 3600, // Revalidate every 60 seconds
-      }
+      // next:{
+      //   revalidate: 3600, // Revalidate every 60 seconds
+      // }
     });
+
+    console.log(data);
     if (!data.ok) {
       throw new Error('Failed to fetch issues');
     }
@@ -40,6 +46,7 @@ const IssuesPage =  () => {
     setLoading(false);
 
   };
+
   useEffect(() => {
     fetchIssues();
   }, []);
@@ -48,6 +55,7 @@ const IssuesPage =  () => {
 
 
   // Simulate loading delay
+  delay(2000).then(() => setLoading(false));
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
@@ -59,8 +67,8 @@ const IssuesPage =  () => {
         </p>
       </div>
       <Link href="/issues/new">
-        <button className="w-full sm:w-auto bg-sky-950 text-white px-3 py-2 rounded text-sm hover:bg-sky-900 transition-colors duration-300"  >
-      + New Issue
+        <button className="w-full sm:w-auto bg-sky-950 text-white px-3 py-2 rounded text-sm hover:bg-sky-900 transition-colors duration-300" >
+      + New Issue 
         </button>
       </Link>
     </div>

@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import UserCard from './components/UserCard';
 import { EnterIcon } from '@radix-ui/react-icons';
 import delay from 'delay';
-
+import Skeleton from './components/Skeleton';
 
 // Simulate loading delay
 delay(2000); // Simulate loading delay
@@ -25,6 +25,7 @@ const NavaBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const {status, data: session} = useSession();
+
  
 
   return (
@@ -112,16 +113,15 @@ const NavaBar = () => {
 
         {/* Right-side icons (hidden on mobile, shown on md+) */}
         <div>
-       {
-        status === "authenticated" && <UserCard session={session} />
-       }
-       {
-        status === "unauthenticated" && <Link href="api/auth/signin" className="flex items-center gap-2 bg-sky-950 text-white px-3 py-2 rounded text-sm hover:bg-sky-900 transition-colors duration-300">
-          <EnterIcon className="w-4 h-4 text-white" />
-          Login
-          </Link>
-
-       }
+       
+        {
+          status === "loading" ? (
+            <Skeleton width={100} height={30}/>
+          ) : (
+            <AuthStatus />
+          )
+        }
+       
        </div>
       </div>
     </nav>
@@ -129,3 +129,21 @@ const NavaBar = () => {
 }
 
 export default NavaBar
+
+
+
+ const AuthStatus = () => {
+  const { status, data: session } = useSession();
+    if (status === "loading")
+      return <Skeleton width={100} height={30}/>;
+    if (status === "authenticated") 
+      return <UserCard session={session} />
+    
+    if (status === "unauthenticated") 
+      return (<Link href="/api/auth/signin" className="flex items-center gap-2 bg-sky-950 text-white px-3 py-2 rounded text-sm hover:bg-sky-900 transition-colors duration-300">
+          <EnterIcon className="w-4 h-4 text-white" />
+          Login
+          </Link>
+      )
+    }
+ 

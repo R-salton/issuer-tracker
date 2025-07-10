@@ -1,11 +1,11 @@
 
 'use client'
-import React, { useState } from 'react'
+import ErrorMessage from '@/app/components/errorMessage'
 import { Button } from "@/components/ui/button"
 import { Callout, TextField } from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
-import ErrorMessage from '@/app/components/errorMessage'
-import { Textarea } from '@/components/ui/textarea'
+import React, { useState } from 'react'
+
 const NewIssuePage = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -16,6 +16,8 @@ const NewIssuePage = () => {
   const [error, setError] = useState<{ title?: string; description?: string }>({});
 
   const router = useRouter();
+
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -50,6 +52,10 @@ const NewIssuePage = () => {
         }
         // fallback for other error formats
         setTitleError(data?.message || 'Invalid input');
+        return;
+      }
+      if (response.status === 401) {
+        setTitleError("Must be logged in to create an issue");
         return;
       }
 
