@@ -1,16 +1,14 @@
 
 "use client"
-import * as React from "react"
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { useState,useEffect } from "react"
+  SelectValue
+} from "@/components/ui/select";
+import { useEffect, useState } from "react";
 import { User } from "../generated/prisma";
 
 

@@ -8,6 +8,7 @@ import NavaBar from "./navbar";
 import { Theme, ThemePanel } from "@radix-ui/themes";
 import { SessionProvider } from "next-auth/react";
 import AuthProvider from "./AuthProvider";
+import QueryClientProvider from "./Query ClientProvider";
 
 
 const poppins = Poppins({
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
           className="font-poppins"
       >
+        <QueryClientProvider>
         <AuthProvider>
         <Theme>
 
@@ -48,6 +50,7 @@ export default function RootLayout({
 
         <script src="https://kit.fontawesome.com/d9d509c70a.js" crossOrigin="anonymous"></script>
         </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
