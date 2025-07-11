@@ -37,7 +37,7 @@ const IssuesPage = () => {
       // }
     });
 
-    console.log(data);
+   
     if (!data.ok) {
       throw new Error('Failed to fetch issues');
     }

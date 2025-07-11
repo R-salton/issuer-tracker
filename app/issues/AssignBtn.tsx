@@ -14,6 +14,8 @@ import Skeleton from "react-loading-skeleton";
 import { Issue, User } from "../generated/prisma";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 
 
@@ -52,24 +54,34 @@ if (isLoading) {
 
   return (
    <Select defaultValue={issue.assignedToUserId || ""} onValueChange={(userId) => {
+
+    
     if (userId === "unassigned") {
-      axios.patch(`http://localhost:3000/api/issues/${issue.id}`, {
+      return axios.patch(`http://localhost:3000/pi/issues/${issue.id}`, {
         assignedToUserId: null // Unassign the issue
       }).then(() => {
         router.refresh();
-        
-      }).then(() => {
-        router.refresh();
-      })
+      }).catch(()=>{
+
+        toast.error("Failed to unassign issue. Please try again.");
+    })
     }
     else{
     
     // Update the issue with the selected user ID
-   axios.patch(`http://localhost:3000/api/issues/${issue.id}`, {
+  return axios
+    .patch(`http://localhost:3000/api/issues/${issue.id}`, {
       assignedToUserId: userId
+    }).catch(()=>{
+
+      toast.error("Failed to assign issue. Please try again.");
     }).then(() => {
-       router.refresh();
-    })
+      router.refresh();
+      toast.success("Issue assigned successfully");
+    }
+    );
+    
+    
   }
 
    

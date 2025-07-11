@@ -93,7 +93,10 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 
   const {assignedToUserId,title,description,status} = data;
- 
+  if(assignedToUserId === null){
+    // If assignedToUserId is null, we can set it to undefined
+    data.assignedToUserId = null;
+  }
 
   if(assignedToUserId){
     // Check if the assigned user exists
