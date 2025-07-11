@@ -32,7 +32,10 @@ const IssueDetailsPage = async ({ params }: Props) => {
     return <div className="text-red-600 p-8">Issue not found.</div>;
   }
 
+
   const issue = await res.json();
+
+  
 
   return (
     <div className=" mx-auto mt-10 bg-white rounded-xl p-8">
@@ -40,7 +43,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
          <i className="absolute top-20 left-12 text-white hover:text-sky-700  transition-colors duration-400 btn-circle bg-sky-950 p-2  fa-solid fa-arrow-left"></i>
         </Link>
       <Heading className="text-3xl font-bold secondary-text mb-4">{issue.title}</Heading>
+       <p className='text-gray-600 text-sm'><span className='text-sky-900 font-bold'>Assigned to: </span>{issue.assignedUser?.name || "Unassigned"}</p>
       <Flex className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6 mt-4">
+        
        
          
           <IssueStatusBadge status={issue.status} />
@@ -59,8 +64,9 @@ const IssueDetailsPage = async ({ params }: Props) => {
         session && 
           <div className=" pt-6 flex flex-col sm:flex-row gap-4">
        <Editbtn id={issue.id} />
-       <AssignBtn />
+       <AssignBtn issue={issue} />
         <DeleteBtn id={issue.id} />
+       
       </div>
         
       }

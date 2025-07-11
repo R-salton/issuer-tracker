@@ -25,13 +25,25 @@ export async function GET(request: Request, { params }: { params: Paramas }) {
       id: parseInt(await id.id),
     },
   });
+  
  
 
   if (!issue) {
     return NextResponse.json({ message: 'Issue not found' }, { status: 404 });
   }
 
-  return NextResponse.json(issue);
+  const assignedUser = issue.assignedToUserId
+    ? await prisma.user.findUnique({
+        where: {
+          id: issue.assignedToUserId,
+        },
+      })
+    : null;
+
+  return NextResponse.json({
+    ...issue,
+    assignedUser: assignedUser ? { id: assignedUser.id, name: assignedUser.name } : null,
+  });
 }
 
 
@@ -61,6 +73,7 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = await request.json();
+  console.log(data);
 
 
   const session = await getServerSession(AuthOptions);
@@ -80,6 +93,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
   }
 
   const {assignedToUserId,title,description,status} = data;
+ 
 
   if(assignedToUserId){
     // Check if the assigned user exists
