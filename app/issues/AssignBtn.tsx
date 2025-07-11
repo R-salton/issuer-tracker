@@ -10,21 +10,37 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import { User } from "../generated/prisma";
+import { useQuery } from "@tanstack/react-query";
+import { error } from "console";
+import Skeleton from "react-loading-skeleton";
 
 
 const AssignBtn = () => {
-const [users, setUsers] = useState<User[]>([]);
 
 
-useEffect(() => {
-    const fetchUsers = async () => {
-      const res = await fetch(`http://localhost:3000/api/users`);
-      if (!res.ok) throw new Error("Failed to fetch users");
-      const data = await res.json();
-      setUsers(data);
-    };
-    fetchUsers();
-  }, []);
+const {data : users, error , isLoading} = useQuery<User[]>({
+  queryKey: ['users'],
+  queryFn: async () => {
+    const res = await fetch(`http://localhost:3000/api/users`);
+    if (!res.ok) throw new Error("Failed to fetch users");
+    return res.json();
+  },
+  staleTime: 60 * 1000, // 1 minute
+
+})
+
+if (error) {
+  return null
+}
+
+if (isLoading) {
+  return <Skeleton  width={100} height={30}  />
+}
+
+
+
+
+
 
   
 
@@ -36,7 +52,7 @@ useEffect(() => {
   <SelectContent>
     <SelectGroup className="text-sm">
     {
-        users.map((user) => (
+        users?.map((user) => (
           <SelectItem key={user.id } className="hover:!bg-blue-950 hover:text-white transition-all duration-500 text-sky-950 text-sm" value={user.id}>{user.name}</SelectItem>
         ))
     }
