@@ -15,9 +15,9 @@ const statusOptions = Object.entries(IssueStatus).map(([value, label]) => ({
   label: label.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase()),
 }));
 
-const UpdatingIssuePage = ({ params }: { params: Params }) => {
-const idRaw = params.id;
-const id = parseInt((idRaw as unknown as string).toString());
+const UpdatingIssuePage =  ({ params }: { params: Params }) => {
+const id =  params.id;
+
 
   const router = useRouter();
   const [title, setTitle] = useState("");
@@ -32,7 +32,10 @@ const id = parseInt((idRaw as unknown as string).toString());
   useEffect(() => {
     const fetchIssue = async () => {
       try {
-        const res = await fetch(`/api/issues/${id}`);
+        const res = await fetch(`/api/issues/${id}`,{
+          
+        });
+        console.log(res);
         if (!res.ok) throw new Error("Failed to fetch issue");
         const data = await res.json();
         setTitle(data.title);
@@ -53,8 +56,9 @@ const id = parseInt((idRaw as unknown as string).toString());
     setDescriptionError("");
     setError({});
     try {
-      const response = await fetch(`/api/issues/${params.id}`, {
-        method: "PUT",
+     
+      const response = await fetch(`http://localhost:3000/api/issues/${id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
@@ -64,6 +68,9 @@ const id = parseInt((idRaw as unknown as string).toString());
           status,
         }),
       });
+
+
+    
 
       if (response.status === 400) {
         const data = await response.json().catch(() => ({}));

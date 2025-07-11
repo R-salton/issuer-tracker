@@ -54,8 +54,6 @@ const IssuesPage = () => {
 
 
 
-  // Simulate loading delay
-  delay(2000).then(() => setLoading(false));
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">

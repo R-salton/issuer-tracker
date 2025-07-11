@@ -4,13 +4,14 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getServerSession } from 'next-auth'
 import AuthOptions from '@/app/auth/AuthOptions'
+import { title } from 'process';
+import { create } from 'domain';
+import { createIssueSchema, patchIssueShema } from '@/app/validationSchemas';
 
 // Define your validation schema
-const issueSchema = z.object({
-  title: z.string().min(3, "Title must be at least 3 characters"),
-  description: z.string().min(5, "Description must be at least 5 characters"),
-  status: z.string().optional(),
-});
+
+
+
 
 interface Paramas{
   id: Promise<string>;
@@ -57,12 +58,12 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
 }
 
 
-export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const data = await request.json();
+
+
   const session = await getServerSession(AuthOptions);
-
-
   // Check if user is authenticated
   if (!session) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -70,13 +71,29 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
 
 
   // Validate input
-  const result = issueSchema.safeParse(data);
+  const result = patchIssueShema.safeParse(data);
   if (!result.success) {
     return NextResponse.json(
       { errors: result.error.errors.map(e => ({ path: e.path, message: e.message })) },
       { status: 400 }
     ); 
   }
+
+  const {assignedToUserId,title,description,status} = data;
+
+  if(assignedToUserId){
+    // Check if the assigned user exists
+    const assignedUser = await prisma.user.findUnique({
+      where: {
+        id: assignedToUserId,
+      },
+    });
+
+    if (!assignedUser) {
+      return NextResponse.json({ message: 'Invalid User!' }, { status: 400 });
+    }
+  }
+
 
   // Check if issue exists
   const issue = await prisma.issue.findUnique({
@@ -94,8 +111,13 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       id: parseInt(id),
     },
     data: {
-      ...result.data,
-      status: result.data.status as IssueStatus,
+      ...data, // Spread the validated data
+      // Ensure status is of type IssueStatus
+      status: status as IssueStatus, // Type assertion to ensure correct type
+      title,
+      description, // Ensure status is of type IssueStatus
+      assignedToUserId// Use undefined if not provided
+      
     },
   });
 
