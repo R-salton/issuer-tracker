@@ -6,6 +6,7 @@ import { IssueStatus } from '../generated/prisma'
 
 import Link from 'next/link'
 import DeleteIssueBtn from './DeleteIssueBtn'
+import IssueStatusFilter from './list/IssueStatusFilter'
 
 
 interface Issue {
@@ -57,18 +58,21 @@ const IssuesPage = () => {
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
-    <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div className="mb-6 flex  sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 className="text-2xl font-bold text-sky-900 mb-1">Issues Tracker</h1>
         <p className="text-gray-600 max-w-2xl text-sm sm:text-base">
       View and manage all your project issues here. Track status, review details, and take action quickly. 
         </p>
       </div>
-      <Link href="/issues/new">
+      <div className='flex items-center gap-4'>
+        <IssueStatusFilter />
+        <Link href="/issues/new">
         <button className="w-full sm:w-auto bg-sky-950 text-white px-3 py-2 rounded text-sm hover:bg-sky-900 transition-colors duration-300" >
       + New Issue 
         </button>
       </Link>
+      </div>
     </div>
       <div className="overflow-x-auto rounded-lg shadow">
         <div className="w-full overflow-x-auto">
