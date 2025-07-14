@@ -11,13 +11,13 @@ interface Issue {
 
 const DeleteIssueBtn = ({
   issue,
-  onDeleted,
+ 
 }: {
   issue: Issue;
-  onDeleted: () => void;
+ 
 }) => {
   const [open, setOpen] = useState(false);
-
+ 
   const handleDelete = async (id: number) => {
     await fetch(`/api/issues?id=${id}`, {
       method: 'DELETE',
@@ -26,7 +26,7 @@ const DeleteIssueBtn = ({
       },
     });
     setOpen(false);
-    if (onDeleted) onDeleted();
+    alert('Issue deleted successfully');
   };
 
   return (

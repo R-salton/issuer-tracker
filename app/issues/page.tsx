@@ -1,12 +1,15 @@
-'use client'
+
 import delay from 'delay'
-import { useEffect, useState } from 'react'
 import IssueStatusBadge from '../components/issueStatusBadge'
-import { IssueStatus } from '../generated/prisma'
+
+
+import prisma from "@/prisma/client"
 
 import Link from 'next/link'
 import DeleteIssueBtn from './DeleteIssueBtn'
 import IssueStatusFilter from './list/IssueStatusFilter'
+import { IssueStatus } from '../generated/prisma'
+
 
 
 interface Issue {
@@ -17,44 +20,36 @@ interface Issue {
   createdAt: string;
 }
 
-// delay(2000) // Simulate loading delay
 
-const IssuesPage = () => {
-  const [issues, setIssues] = useState<Issue[]>([]);
-  const [loading, setLoading] = useState(true);
+
+
+delay(2000) // Simulate loading delay
+
+
+const IssuesPage = async({
+  searchParams,
+} : {searchParams: Promise< {status: IssueStatus}>}) => {
+//     const searchParams = useSearchParams();
+
+
+
+
+const filter = (await (searchParams)).status
+
+
+
+ const issues = await prisma.issue.findMany({
+  where: {
+    status: filter
+  },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
   
-
  
-
-  const fetchIssues = async (): Promise<void> => {
-    setLoading(true);
-    const data  = await fetch('http://localhost:3000/api/issues', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // next:{
-      //   revalidate: 3600, // Revalidate every 60 seconds
-      // }
-    });
-
-   
-    if (!data.ok) {
-      throw new Error('Failed to fetch issues');
-    }
-    const issues = await data.json();
-    setIssues(issues);
-    setLoading(false);
-
-  };
-
-  useEffect(() => {
-    fetchIssues();
-  }, []);
-
-
-
-
+ 
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
@@ -87,7 +82,9 @@ const IssuesPage = () => {
               </tr>
             </thead>
             <tbody>
-              {issues.map((issue) => (
+
+
+              { issues.length > 0 ? issues.map((issue) => (
                 <tr key={issue.id} className="text-sky-950 hover:bg-softblue transition border-b-1 border-gray-300">
                   <td className="py-2 px-3">{issue.title}
                     <div className=' text-green-700 w-14 text-center p-2 rounded-lg md:hidden'>
@@ -116,17 +113,26 @@ const IssuesPage = () => {
                       <Link href={`/issues/${issue.id}`} className='flex items-center gap-2'>
                       <p className='text-xs'>View</p>
                       </Link>
-                      <DeleteIssueBtn issue={issue} onDeleted={() => setIssues(issues.filter((i) => i.id !== issue.id))} />
+                      <DeleteIssueBtn issue={issue} />
                     </div>
                   </td>
                 </tr>
-              ))}
+              )) :
+              <tr className="text-sky-950 hover:bg-softblue transition border-b-1 border-gray-300">
+                <td className="py-2 px-3">No issues found</td>
+                <td className="hidden md:table-cell py-2 px-3"></td>
+                <td className="hidden md:table-cell py-2 px-3"></td>
+                <td className="py-2 px-3"></td>
+                </tr>
+              }
             </tbody>
           </table>
         </div>
       </div>
     </section>
   )
+
+  
 }
 
 export default IssuesPage
