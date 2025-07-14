@@ -50,7 +50,7 @@ const statuses  = Object.values(IssueStatus);
 
  
   
-const orderBy = searchParams.orderBy ? {[searchParams.orderBy] : 'asc'} : undefined
+const orderBy = await searchParams.orderBy ? {[searchParams.orderBy as keyof Issue]: 'asc'} : undefined;
 
  try {
    issues = await prisma.issue.findMany({
