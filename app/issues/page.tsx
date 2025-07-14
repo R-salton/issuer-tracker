@@ -8,48 +8,59 @@ import prisma from "@/prisma/client"
 import Link from 'next/link'
 import DeleteIssueBtn from './DeleteIssueBtn'
 import IssueStatusFilter from './list/IssueStatusFilter'
-import { IssueStatus } from '../generated/prisma'
-
-
-
-interface Issue {
-  id: number;
-  title: string;
-  description: string;
-  status: string;
-  createdAt: string;
-}
-
-
+import { Issue, IssueStatus } from '../generated/prisma'
+import toast from 'react-hot-toast'
+import NextLink from 'next/link'
+import { ArrowUp } from 'lucide-react'
+import { log } from 'console'
+import { serialize } from 'v8'
 
 
 delay(2000) // Simulate loading delay
 
+interface Props {
+ searchParams : {status?: {status: IssueStatus}, orderBy?: keyof Issue},
+
+}
 
 const IssuesPage = async({
   searchParams,
-} : {searchParams: Promise< {status: IssueStatus}>}) => {
-//     const searchParams = useSearchParams();
+} : Props) => {
 
 
+const filter = await searchParams
+let issues: Issue[] = [];
+
+console.log(filter)
 
 
-const filter = (await (searchParams)).status
+const columns: { 
+  label: string;
+   key: keyof Issue;
+   className?: string;
+   }[] = [
+  { label: 'Title', key: 'title' },
+  { label: 'Status', key: 'status',className: 'hidden md:table-cell py-2 px-3 text-left' },
+  { label: 'Created', key: 'createdAt',className: "hidden md:table-cell py-2 px-3 text-left" },
+  
+]
 
 
+const statuses  = Object.values(IssueStatus);
 
- const issues = await prisma.issue.findMany({
+ 
+  
+const orderBy = searchParams.orderBy ? {[searchParams.orderBy] : 'asc'} : undefined
+
+ try {
+   issues = await prisma.issue.findMany({
   where: {
-    status: filter
+    status: filter.status ,
   },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    orderBy: orderBy,
   });
 
-  
- 
- 
+  console.log(issues)
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
@@ -74,11 +85,20 @@ const filter = (await (searchParams)).status
           <table className="w-full min-w-[320px] sm:min-w-[480px] md:min-w-[600px] text-xs sm:text-sm md:text-base">
             <thead>
               <tr className="bg-gray-100 text-sky-950">
-                <th className="py-2 px-3 text-left">Title</th>
-               
-                <th className="hidden md:table-cell py-2 px-3 text-left">Status</th>
-                <th className="hidden md:table-cell py-2 px-3 text-left">Created At</th>
-                <th className="py-2 px-3 text-left">Actions</th>
+                {
+                  columns.map((column) => (
+                    <th key={column.key} className={`py-2 px-3 text-left ${column.className}`}>
+                     <NextLink className='flex items-center gap-1' 
+                            href={{
+                              query: { status: filter.status, orderBy: column.key }, // ✅ proper key-value structure
+                            }}
+                          >
+                      {column.label}
+                      {column.key === searchParams.orderBy && <ArrowUp className='ml-2 h-4 w-4' />}
+                      </NextLink>
+                    </th>
+                  ))
+                }
               </tr>
             </thead>
             <tbody>
@@ -132,6 +152,19 @@ const filter = (await (searchParams)).status
     </section>
   )
 
+  
+ } catch (error) {
+
+  return (
+      <div className="text-center mt-10 text-red-600">
+        <h2 className="text-xl font-semibold">Something went wrong</h2>
+        <p>Please try again later.</p>
+      </div>
+    );
+  
+ }
+
+  
   
 }
 
