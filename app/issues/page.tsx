@@ -11,15 +11,18 @@ import IssueStatusFilter from './list/IssueStatusFilter'
 import { Issue, IssueStatus } from '../generated/prisma'
 import toast from 'react-hot-toast'
 import NextLink from 'next/link'
-import { ArrowUp } from 'lucide-react'
+import { ArrowUp, Dot } from 'lucide-react'
 import { log } from 'console'
 import { serialize } from 'v8'
+import TablePagination from './Pagination'
+import { DotsVerticalIcon } from '@radix-ui/react-icons'
 
 
 delay(2000) // Simulate loading delay
 
 interface Props {
- searchParams : {status?: {status: IssueStatus}, orderBy?: keyof Issue},
+ searchParams : {status?: {status: IssueStatus}, orderBy?: keyof Issue,page?: string;
+    pageSize?: string;},
 
 }
 
@@ -50,17 +53,24 @@ const statuses  = Object.values(IssueStatus);
 
  
   
-const orderBy = await searchParams.orderBy ? {[searchParams.orderBy as keyof Issue]: 'asc'} : undefined;
+const orderBy = await searchParams.orderBy ? {[await searchParams.orderBy as keyof Issue]: 'asc'} : undefined;
+
+ const page = parseInt(searchParams.page ?? '1');
+  const pageSize = parseInt(searchParams.pageSize ?? '10');
+   const total = await prisma.issue.count();
 
  try {
    issues = await prisma.issue.findMany({
   where: {
     status: filter.status ,
   },
-    orderBy: orderBy,
+    orderBy: orderBy || undefined,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
 
-  console.log(issues)
+
+   
 
   return (
     <section className="px-2 py-4 sm:px-6 md:px-12 lg:px-24">
@@ -96,9 +106,12 @@ const orderBy = await searchParams.orderBy ? {[searchParams.orderBy as keyof Iss
                       {column.label}
                       {column.key === searchParams.orderBy && <ArrowUp className='ml-2 h-4 w-4' />}
                       </NextLink>
+
                     </th>
+                   
                   ))
                 }
+                 <th className='text-sky-950 font-bold text-left'>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -131,9 +144,9 @@ const orderBy = await searchParams.orderBy ? {[searchParams.orderBy as keyof Iss
                     <div className="flex items-center gap-4 text-lg">
                       <i className="cursor-pointer hover:text-sky-700 transition-colors duration-400 fa-solid fa-pen"></i>
                       <Link href={`/issues/${issue.id}`} className='flex items-center gap-2'>
-                      <p className='text-xs'>View</p>
+                      <DotsVerticalIcon className='text-sky-950 hover:text-sky-700 transition-colors duration-400 fa-solid fa-pen'></DotsVerticalIcon>
                       </Link>
-                      <DeleteIssueBtn issue={issue} />
+                     
                     </div>
                   </td>
                 </tr>
@@ -146,9 +159,23 @@ const orderBy = await searchParams.orderBy ? {[searchParams.orderBy as keyof Iss
                 </tr>
               }
             </tbody>
+   
           </table>
+         
         </div>
+                     
+   
+          
+        
       </div>
+      <div className="w-full mt-6 mb-2 flex justify-end">
+  <TablePagination
+    currentPage={page}
+    pageSize={pageSize}
+    totalItems={total}
+  />
+</div>
+      
     </section>
   )
 
