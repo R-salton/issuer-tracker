@@ -19,6 +19,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the 
 
+## DEMO
+![isssue traker](https://github.com/user-attachments/assets/d8635894-b698-471d-a1dd-953cf0d40647)
+
 
 ## Screen shots
 ### Landing page
