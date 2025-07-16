@@ -21,9 +21,12 @@ model Issue {
   description      String
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
-  createdByUserId  String?      @db.VarChar(255)
+
+  createdByUserId  String?     @db.VarChar(255)
+  createdByUser    User?       @relation("CreatedIssues", fields: [createdByUserId], references: [id])
+
   assignedToUserId String?     @db.VarChar(255)
-  assignedToUser   User?       @relation(fields: [assignedToUserId], references: [id])
+  assignedToUser   User?       @relation("AssignedIssues", fields: [assignedToUserId], references: [id])
 }
 
 enum IssueStatus {
@@ -73,11 +76,12 @@ model User {
   hashedPassword String? // Optional password field for local authentication
   accounts       Account[]
   sessions       Session[]
-  AssigedIssues  Issue[]
+
+  createdIssues  Issue[]   @relation("CreatedIssues")
+  assignedIssues Issue[]   @relation("AssignedIssues")
 
   @@map("users")
 }
-
 model VerificationToken {
   identifier String
   token      String

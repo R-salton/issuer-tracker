@@ -10,6 +10,8 @@ import React, { useState } from 'react'
 
 const NewIssuePage = () => {
   const { data: session, status } = useSession();
+
+  console.log(session?.user?.id);
   
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -36,7 +38,7 @@ const NewIssuePage = () => {
         body: JSON.stringify({
           title,
           description,
-          createdByUserId: session?.user.id,
+          createdByUserId: session?.user?.id,
         }),
       });
 
@@ -44,7 +46,7 @@ const NewIssuePage = () => {
       if (response.status == 400) {
         const data = await response.json().catch(() => ({}));
         // Reset errors first
-        setTitleError('');
+        setTitleError(''); 
         setDescriptionError('');
 
         // If Zod error, it should be in data.errors or data.fieldErrors

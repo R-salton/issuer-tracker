@@ -1,12 +1,9 @@
 import { IssueStatus } from '@/app/generated/prisma';
 import prisma from '@/prisma/client';
+import { getServerSession } from 'next-auth';
 import { NextResponse } from 'next/server';
-import { z } from 'zod';
-import { getServerSession } from 'next-auth'
-import AuthOptions from '@/app/auth/AuthOptions'
-import { title } from 'process';
-import { create } from 'domain';
-import { createIssueSchema, patchIssueShema } from '@/app/validationSchemas';
+import { patchIssueShema } from '@/app/validationSchemas';
+import { AuthOptions } from '@/app/auth/AuthOptions';
 
 // Define your validation schema
 

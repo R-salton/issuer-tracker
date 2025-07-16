@@ -4,8 +4,9 @@ import Link from 'next/link';
 import DeleteBtn from './DeleteBtn';
 import Editbtn from './Editbtn';
 import { getServerSession } from 'next-auth';
-import AuthOptions from '@/app/auth/AuthOptions';
+
 import AssignBtn from '../AssignBtn';
+import { AuthOptions } from '@/app/auth/AuthOptions';
 
 interface Props {
   params: Promise<{
