@@ -3,10 +3,14 @@
 import ErrorMessage from '@/app/components/errorMessage'
 import { Button } from "@/components/ui/button"
 import { Callout, TextField } from '@radix-ui/themes'
+import { create } from 'domain'
+import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 const NewIssuePage = () => {
+  const { data: session, status } = useSession();
+  
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [loading, setLoading] = useState(false);
@@ -32,6 +36,7 @@ const NewIssuePage = () => {
         body: JSON.stringify({
           title,
           description,
+          createdByUserId: session?.user.id,
         }),
       });
 

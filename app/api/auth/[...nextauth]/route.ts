@@ -1,5 +1,6 @@
 
-import AuthOptions from "@/app/auth/AuthOptions"
+
+import { AuthOptions } from "@/app/auth/AuthOptions"
 import NextAuth from "next-auth"
 
 

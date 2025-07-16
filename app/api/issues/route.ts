@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server"
 import prisma from "@/prisma/client"
 import { createIssueSchema } from "../../validationSchemas"
 import { getServerSession } from 'next-auth'
-import AuthOptions from '@/app/auth/AuthOptions'
+import { AuthOptions } from "@/app/auth/AuthOptions"
+
 
 export async function POST(Request: NextRequest){
 const body = await Request.json()
@@ -33,8 +34,11 @@ const newIssue = await prisma.issue.create({
     data: {
         title: body.title,
         description: body.description,
+        createdByUserId: body.createdByUserId,
     }
 });
+
+console.log(newIssue)
 
 return NextResponse.json(newIssue,{status:201});
 

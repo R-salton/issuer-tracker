@@ -26,8 +26,6 @@ const WeeklyIssuesChart = () => {
   });
 
 
-  console.log(data)
-
 const barData = {
 	labels: data?.labels,
 	datasets: [
