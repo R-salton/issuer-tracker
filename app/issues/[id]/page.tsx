@@ -7,6 +7,7 @@ import { getServerSession } from 'next-auth';
 
 import AssignBtn from '../AssignBtn';
 import { AuthOptions } from '@/app/auth/AuthOptions';
+import { parse } from 'path';
 
 interface Props {
   params: Promise<{
@@ -74,5 +75,32 @@ const IssueDetailsPage = async ({ params }: Props) => {
     </div>
   )
 }
+
+
+// export async function generateMetadata({params}: {params: Promise<{ id: string }>}) {
+//   const id = parseInt((await params).id);
+
+  
+// const ses = await fetch(`http://localhost:3000/api/issues/${id}`, {
+//     method: 'GET',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     cache: 'no-store'
+//   });
+
+
+//   const issue = await ses.json();
+
+//   return {
+//     title: issue?.title,
+//     description: issue?.description,
+//     openGraph: {
+//       title: issue?.title,
+//       description: issue?.description,
+      
+//     },
+//   }
+// }
 
 export default IssueDetailsPage

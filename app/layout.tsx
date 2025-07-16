@@ -17,10 +17,27 @@ const poppins = Poppins({
   subsets: ["latin"],
   display: "swap",
 });
-export const metadata: Metadata = {
-  title: "issue tracker",
-  description: "Create and track issues easily",
+export const metadata = {
+  title: {
+    default: 'Issue Tracker',
+    template: '%s | Issue Tracker',
+  },
+  description:
+    'Effortlessly track, assign, and resolve issues with our powerful and collaborative issue tracking platform.',
+  keywords: ['issue tracking', 'bug tracker', 'project management', 'collaboration', 'Next.js'],
+  authors: [
+    {
+      name: 'Sadev',
+      url: 'https://github.com/R-salton',
+    },
+  ],
+  creator: 'Salton',
+  metadataBase: new URL('https://your-app-domain.com'),
 };
+
+
+
+
 
 export default function RootLayout({
   children,
