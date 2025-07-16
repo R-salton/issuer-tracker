@@ -3,60 +3,91 @@ import { ArcElement, BarElement, CategoryScale, Chart, Legend, LinearScale, Tool
 import { Bar, Doughnut } from 'react-chartjs-2'
 import { FaBug, FaCheckCircle, FaHourglassHalf, FaUsers } from 'react-icons/fa'
 
+
+import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import WeeklyIssuesChart from './WeeklyIssuesChart'
+
 Chart.register(CategoryScale, LinearScale, BarElement, ArcElement, Tooltip, Legend)
 
-const stats = [
-	{
-		label: 'Open Issues',
-		value: 24,
-		icon: <FaBug className="text-sky-950 text-3xl" />,
-		color: 'bg-sky-100',
-	},
-	{
-		label: 'In Progress',
-		value: 12,
-		icon: <FaHourglassHalf className="text-sky-950 text-3xl" />,
-		color: 'bg-sky-200',
-	},
-	{
-		label: 'Resolved',
-		value: 40,
-		icon: <FaCheckCircle className="text-green-600 text-3xl" />,
-		color: 'bg-green-50',
-	},
-	{
-		label: 'Team Members',
-		value: 8,
-		icon: <FaUsers className="text-sky-950 text-3xl" />,
-		color: 'bg-sky-50',
-	},
-]
-
-const barData = {
-	labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-	datasets: [
-		{
-			label: 'Issues Created',
-			data: [5, 8, 6, 7, 4, 3, 2],
-			backgroundColor: 'rgba(8, 47, 73, 0.8)',
-			borderRadius: 8,
-			barThickness: 24,
-		},
-	],
+interface Stats {
+  open: number;
+  inProgress: number;
+  closed: number;
 }
 
-const doughnutData = {
-	labels: ['Open', 'In Progress', 'Resolved'],
+
+
+
+
+const getStats = async (): Promise<Stats> => {
+	const res = await fetch('/api/stats');
+  if (!res.ok) throw new Error('Failed to fetch stats');
+  const stats : Stats = await res.json();
+  
+  return stats;
+};
+		
+		
+
+		
+	
+
+
+
+const DashboardPage = () => {
+	
+// Get stats from databe
+
+  const { data, error, isLoading } = useQuery<Stats>({
+    queryKey: ['stats'],
+    queryFn: getStats,
+    staleTime: 1000 * 60, // 1 minute
+  });
+
+  
+  const doughnutData = {
+	labels: ['Open', 'In Progress', 'Closed'],
 	datasets: [
 		{
-			data: [24, 12, 40],
+			data: [data?.open, data?.inProgress, data?.closed],
 			backgroundColor: ['#0c4a6e', '#38bdf8', '#22c55e'],
 			borderWidth: 2,
 		},
 	],
 }
 
-const DashboardPage = () => {
+const [stats, setStats] = useState([
+	{
+		label: 'Open Issues',
+		value: data?.open,
+		icon: <FaBug className="text-sky-950 text-3xl" />,
+		color: 'bg-sky-100',
+	},
+	{
+		label: 'In Progress',
+		value: data?.inProgress,
+		icon: <FaHourglassHalf className="text-sky-950 text-3xl" />,
+		color: 'bg-sky-200',
+	},
+	{
+		label: 'Resolved',
+		value: data?.closed,
+		icon: <FaCheckCircle className="text-green-600 text-3xl" />,
+		color: 'bg-green-50',
+	},
+	{
+		label: 'Team Members',
+		value: 0,
+		icon: <FaUsers className="text-sky-950 text-3xl" />,
+		color: 'bg-sky-50',
+	},
+])
+const [total, setTotal] = useState(0)
+
+
+
+
 	return (
 		<div className="min-h-screen bg-white px-4 py-8 md:px-12 lg:px-24">
 			<div>
@@ -87,25 +118,7 @@ const DashboardPage = () => {
 			{/* Charts Section */}
 			<div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
 				{/* Bar Chart */}
-				<div className="bg-sky-50 rounded-xl shadow-md p-6 flex flex-col items-center">
-					<h2 className="text-lg font-bold text-sky-950 mb-4">
-						Issues Created This Week
-					</h2>
-					<Bar
-						data={barData}
-						options={{
-							responsive: true,
-							plugins: { legend: { display: false } },
-							scales: {
-								x: { grid: { display: false } },
-								y: {
-									beginAtZero: true,
-									grid: { color: '#e5e7eb' },
-								},
-							},
-						}}
-					/>
-				</div>
+				<WeeklyIssuesChart />
 				{/* Doughnut Chart */}
 				<div className="bg-sky-50 rounded-xl shadow-md p-6 flex flex-col items-center">
 					<h2 className="text-lg font-bold text-sky-950 mb-4">
